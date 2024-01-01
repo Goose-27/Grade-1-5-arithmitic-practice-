@@ -1,0 +1,272 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string>
+#include <sstream>
+using namespace std;
+
+
+bool z; //if the question is being asked or not
+bool randomizer = 1; //controls the randomization of the numbers
+string stop; //stops the program if you put in stop
+int grade; //their grade (1-5)
+int mark = 0; //the amount of questions they got right
+int tries = 3; //amount of tries remaining
+int answer; //their answer
+int question = 0; //the amount of questions done
+int random_; //a random number to get a random index from the wrong_messages array
+int operator_; //+ - x ÷
+int x, y; //the two numbers they will be using
+string wrong_message[5] = {"Mistakes are stepping stones to success!",
+                               "Every error is a lesson learned!",
+                               "Growth happens one mistake at a time!",
+                               "Mistakes pave the road to achievement!",
+                               "Failing forward towards success!"};
+
+
+int main() {
+        srand(time(0)); //makes the randomization random
+
+
+            cout << "Choose a grade 1-5" << endl;
+            cin >> stop;  //gets what grade you want to practice
+
+
+          /*error handling if you put an invalid grade
+          converts the answer to a string (using the same variable as the stop to reduce memory
+          usage) and if it doesnt equal a valid answer, it gives an error. If it does, it converts
+          it to the expected variable. This is because if you put in a string without this system,
+          it breaks.All future error handling code will use this system of converting a string
+          into an integer.*/
+  if (stop != "1" && stop != "2" && stop != "3" && stop != "4" && stop != "5") {
+          cerr << "Invalid choice. Please enter a number 1-5." << endl;
+          while (stop != "1" && stop != "2" && stop != "3" && stop != "4" && stop != "5") {
+              cin >> stop;
+          }
+          stringstream(stop) >> grade; //convert valid input to integer
+  } else {
+          stringstream(stop) >> grade;
+  }
+
+
+  //selects the operator for grades 1-2
+if (grade == 1 || grade == 2) {
+  cout << "What do you want to practice?" << endl << "1: Addition" << endl << "2: Subtraction" << endl;
+  cin >> stop;
+
+
+  //error handling for operator selection for grades 1-2
+  if (stop != "1" && stop != "2") {
+          cerr << "Invalid choice. Please enter a number 1-2." << endl;
+          while (stop != "1" && stop != "2") {
+              cin >> stop;
+          }
+          stringstream(stop) >> operator_; //convert valid input to integer
+  } else {
+          stringstream(stop) >> operator_;
+  } }
+
+
+  //selects the operator for grades 3-5
+if (grade >= 3 && grade <= 5) {
+  cout << "What do you want to practice?" << endl << "1: Addition" << endl << "2: Subtraction" << endl << "3: Multiplication" << endl << "4: Division" << endl;
+  cin >> stop; }
+
+
+  //error handling for operator selection for grade 3-5
+  if (stop != "1" && stop != "2" && stop != "3" && stop != "4") {
+          cerr << "Invalid choice. Please enter a number 1-4." << endl;
+          while (stop != "1" && stop != "2" && stop != "3" && stop != "4") {
+              cin >> stop;
+          }
+          stringstream(stop) >> operator_; //convert valid input to integer
+  } else {
+          stringstream(stop) >> operator_;
+  }
+ 
+            while (grade >= 1 && grade <= 5) { //if you chose grade 1 or 2
+ 
+                    do {
+
+
+                      z = 0; //stops it from looping
+                      
+                      //sets random digits
+                      if (randomizer) {
+                          if (grade == 1) { //digits from grade 1
+                              x = rand() % 20 + 1;
+                              y = rand() % (20 - x) + 1;
+                          }
+                          else if (grade == 2) { //digits for grade 2
+                              x = rand() % 50 + 1;
+                              y = rand() % (50 - x) + 1;
+                          }
+                          else if (grade == 3) { //digits for grade 3
+                            if (operator_ < 3) { //gr 3 addition/subtraction
+                              x = rand() % 1000 + 1;
+                              y = rand() % (1000 - x) + 1;
+                            }
+                            if (operator_ == 3) { //gr 3 multiplication
+                              x = rand() % 10 + 1;
+                              y = rand() % 10 + 1;
+                            }
+                            if (operator_ == 4) { //gr 3 division
+                              x = rand() % 100 + 1;
+                              y = rand() % 10 + 1 ;
+                            } }
+                          else if (grade == 4) { //digits for grade 4
+                            if (operator_ < 3) { //gr 4 addition/subtraction
+                              x = rand() % 10000 + 1;
+                              y = rand() % (10000 - x) + 1; }
+                            if (operator_ == 3) { //gr 4 multiplication
+                              x = rand() % 999 + 1;
+                              y = rand() % 10 + 1;
+                           }
+                           if (operator_ == 4) { //gr 4 division
+                             x = rand() % 100 + 1;
+                              y = rand() % 10 + 1 ;
+                            } }
+                              else if (grade == 5) { //digits for grade 5
+                            if (operator_ < 3) { //gr 5 addition/subtraction
+                              x = rand() % 100000 + 1;
+                              y = rand() % (100000 - x) + 1; }
+                            if (operator_ == 3) { //gr 5 multiplication
+                              x = rand() % 99 + 1;
+                              y = rand() % 99 + 1;
+                           }
+                            if (operator_ == 4) { //gr 5 division
+                              x = rand() % 100 + 1;
+                              y = rand() % 99 + 1 ;
+                           } }
+                              randomizer = 0; //Stop randomizing
+                          }
+
+
+                      //ensures the difference wont go into negatives for subtraction
+                      while (x - y < 0) {
+                        if (grade == 1) {
+                          x = rand() % 20 + 1;
+                          y = rand() % (20 - x) + 1;
+                        }
+                        if (grade == 2) {
+                        x = rand() % 50 + 1;
+                        y = rand() % (50 - x) + 1;
+                      }
+                        if (grade == 3 && operator_ == 2) {
+                        x = rand() % 50 + 1;
+                        y = rand() % (1000 - x) + 1; }
+
+
+                        if (grade == 4 && operator_ == 2) {
+                        x = rand() % 50 + 1;
+                        y = rand() % (10000 - x) + 1; }
+
+
+                      if (grade == 5 && operator_ == 2) {
+                        x = rand() % 50 + 1;
+                        y = rand() % (100000 - x) + 1; }
+                      }
+
+
+                      int random_ = rand() % 4 + 0; //a random number to grab a random error message from the array
+
+
+                      //outputs the question depending on the operator
+                        if (operator_ == 1) {
+                            cout << "Solve: " << x << " + " << y << endl;
+                            cin >> stop;
+                        } if (operator_ == 2) {
+                            cout << "Solve: " << x << " - " << y << endl;
+                            cin >> stop;
+                        } if (operator_ == 3) {
+                          cout << "Solve: " << x << " x " << y << endl;
+                          cin >> stop;
+                        } if (operator_ == 4) {
+                          cout << "Solve: " << x << " ÷ " << y << " (Remove any decimals from answer)" << endl;
+                          cin >> stop;
+                        }
+
+
+                      //stops the program and tells you your score when you tell it stop
+                      if (stop == "stop" || stop == "Stop") {
+                          cout << "You scored: " << mark * 100 / question << "%! This was a good study session!" << endl;
+                          return 0;
+                      } else {
+                          stringstream(stop) >> answer;
+                      }
+                      /* ^ when you answer the question, it is looking for a string variable
+                        so it is able to detect the word "stop". If it doesnt detect that word
+                        it turns your answer into the intended integer answer*/
+                      //if you get the answer wrong
+                        if (operator_ == 1) { //checks if you're doing addition
+                            if (answer != x + y) {
+                                tries --; }
+                          
+                        } if (operator_ == 2) { //checks if you're doing subrraction
+                            if (answer != x - y) {
+                                tries --; }
+                          
+                        } if (operator_ == 3) { //checks if you're doing multiplication
+                            if (answer != x * y) {
+                                tries --; }
+                          
+                        } if (operator_ == 4) { //checks if you're doing division
+                            if (answer != x / y) {
+                              tries --; }
+                      }
+
+
+                      //outputs your amount of tries when you get something wrong
+                      if (tries == 2) {
+                        cout << "Two more tries remaining." << endl; }
+                      if (tries == 1) {
+                          cout << "One try remaining." << endl; }    
+                      if (tries == 0) { cout << "No more tries remaining." << endl; }
+                      
+                      //if you get the answer right
+                        if (operator_ == 1) { //checks if you're doing addition
+                            if (answer == x + y) {
+                                mark++;
+                                question ++;
+                                cout << "Correct! " << mark << "/" << question << endl;
+                                z = 1;
+                                tries = 3;
+                                randomizer = 1;}
+                        } if (operator_ == 2) { //checks if you're doing subrraction
+                            if (answer == x - y) {
+                                mark++;
+                                question ++;
+                                cout << "Correct! " << mark << "/" << question << endl;
+                                z = 1;
+                                tries = 3;
+                                randomizer = 1; }
+                        } if (operator_ == 3) { //checks if you're doing multiplication
+                           if (answer == x * y) {
+                            mark++;
+                            question ++;
+                            cout << "Correct! " << mark << "/" << question << endl;
+                            z = 1;
+                            tries = 3;
+                            randomizer = 1; }
+                        } if (operator_ == 4) { //checks if you're doing divison
+                        if (answer == x / y) {
+                            mark++;
+                            question ++;
+                            cout << "Correct! " << mark << "/" << question << endl;
+                            z = 1;
+                            tries = 3;
+                            randomizer = 1; }
+                        }
+
+
+              //when tries run out, says you're wrong and repeats the loop
+                        if (tries == 0) {
+                            question ++;
+                            cout << mark << "/" << question << " Keep going! " << wrong_message[random_] << endl;
+                            z = 1;
+                            tries = 3;
+                            randomizer = 1; }
+                      
+                    } while (z == 1);
+            }
+}
